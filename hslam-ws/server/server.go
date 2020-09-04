@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"hslam.com/git/x/websocket"
+	"github.com/hslam/websocket"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
@@ -27,10 +27,10 @@ func main() {
 
 func Serve(conn *websocket.Conn) {
 	for {
-		msg, err := conn.ReadBinaryMessage()
+		msg, err := conn.ReadMessage()
 		if err != nil {
 			break
 		}
-		conn.WriteBinaryMessage(msg)
+		conn.WriteMessage(msg)
 	}
 }

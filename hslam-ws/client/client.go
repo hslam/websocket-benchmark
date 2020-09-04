@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"hslam.com/git/x/stats"
-	"hslam.com/git/x/websocket"
+	"github.com/hslam/stats"
+	"github.com/hslam/websocket"
 	"log"
 )
 
@@ -16,8 +16,8 @@ var bar bool
 
 func init() {
 	flag.StringVar(&addr, "addr", ":9999", "-addr=:9999")
-	flag.IntVar(&total, "total", 1000000, "-total=100000")
-	flag.IntVar(&clients, "clients", 64, "-clients=1")
+	flag.IntVar(&total, "total", 100000, "-total=100000")
+	flag.IntVar(&clients, "clients", 1, "-clients=1")
 	flag.IntVar(&msg, "msg", 512, "-msg=512")
 	flag.BoolVar(&bar, "bar", true, "-bar=true")
 	flag.Parse()
@@ -32,7 +32,7 @@ func main() {
 	var wrkClients []stats.Client
 	var msg = make([]byte, msg)
 	for i := 0; i < clients; i++ {
-		if conn, err := websocket.Dial(addr, "/"); err != nil {
+		if conn, err := websocket.Dial("tcp", addr, "/", nil); err != nil {
 			log.Fatalln("dailing error: ", err)
 		} else {
 			wrkClients = append(wrkClients, &WrkClient{conn, msg})
@@ -47,11 +47,11 @@ type WrkClient struct {
 }
 
 func (c *WrkClient) Call() (int64, int64, bool) {
-	err := c.WriteBinaryMessage(c.msg)
+	err := c.WriteMessage(c.msg)
 	if err != nil {
 		return 0, 0, false
 	}
-	data, err := c.ReadBinaryMessage()
+	data, err := c.ReadMessage()
 	if err != nil {
 		return int64(len(c.msg)), 0, false
 	}
