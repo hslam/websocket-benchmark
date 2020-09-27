@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"golang.org/x/net/websocket"
 	"github.com/hslam/stats"
+	"golang.org/x/net/websocket"
 	"log"
 )
 
@@ -16,7 +16,7 @@ var bar bool
 
 func init() {
 	flag.StringVar(&addr, "addr", ":9999", "-addr=:9999")
-	flag.IntVar(&total, "total", 100000, "-total=100000")
+	flag.IntVar(&total, "total", 1000000, "-total=100000")
 	flag.IntVar(&clients, "clients", 1, "-clients=1")
 	flag.IntVar(&msg, "msg", 512, "-msg=512")
 	flag.BoolVar(&bar, "bar", true, "-bar=true")

@@ -33,4 +33,5 @@ func Serve(conn *websocket.Conn) {
 		}
 		conn.WriteMessage(msg)
 	}
+	conn.Close()
 }
